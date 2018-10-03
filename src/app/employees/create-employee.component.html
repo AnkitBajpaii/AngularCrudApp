@@ -9,15 +9,16 @@
       <div class="form-group">
         <label for="fullName"> Full Name </label>
         <input id="fullName" name="fullName" [(ngModel)]="employee.name" type="text" class="form-control"
-          [class.is-invalid]="fullNameControl.touched && fullNameControl.invalid" #fullNameControl="ngModel" required>
-        <div *ngIf="fullNameControl.touched && fullNameControl.invalid" class="text-danger">
+          [class.is-invalid]="fullNameControl.touched && fullNameControl.errors?.required" #fullNameControl="ngModel"
+          required>
+        <small *ngIf="fullNameControl.touched && fullNameControl.errors?.required" class="invalid-feedback">
           * Full Name is required
-        </div>
+        </small>
       </div>
 
       <div class="form-group">
         <label> Gender </label>
-        <div class="form-control">
+        <div class="form-control" [class.is-invalid]="genderControl.touched && genderControl.errors?.required">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" value="male" name="gender" [(ngModel)]="employee.gender"
               #genderControl="ngModel" required>
@@ -35,15 +36,15 @@
           </div>
         </div>
 
-        <div *ngIf="genderControl.touched && genderControl.invalid" class="text-danger">
+        <small *ngIf="genderControl.touched && genderControl.errors?.required" class="invalid-feedback">
           * Gender is required
-        </div>
+        </small>
 
       </div>
 
       <div class="form-group">
         <label> Contact Preference </label>
-        <div class="form-control">
+        <div class="form-control" [class.is-invalid]="contactPrefControl.touched && contactPrefControl.errors?.required">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" value="email" name="contactPreference" [(ngModel)]="employee.contactPreference"
               #contactPrefControl="ngModel" required>
@@ -61,32 +62,32 @@
           </div>
         </div>
 
-        <div *ngIf="contactPrefControl.touched && contactPrefControl.invalid" class="text-danger">
+        <small *ngIf="contactPrefControl.touched && contactPrefControl.errors?.required" class="invalid-feedback">
           * Contact preference is required
-        </div>
+        </small>
       </div>
 
       <div class="form-group">
         <label for="email"> Email </label>
         <input id="email" type="text" name="email" [(ngModel)]="employee.email" class="form-control" #emailControl="ngModel"
-          [class.is-invalid]="emailControl.touched && (emailControl.errors?.required || emailControl.errors?.email)"
-          required email>
+          [class.is-invalid]="(emailControl.errors?.required || emailControl.errors?.email)" [required]="contactPrefControl.value === 'email'"
+          email>
 
-        <div *ngIf="emailControl.touched && emailControl.errors?.required" class="text-danger">
+        <small *ngIf=" emailControl.errors?.required" class="invalid-feedback">
           * Email is required
-        </div>
-        <div *ngIf="emailControl.touched && emailControl.errors?.email" class="text-danger">
+        </small>
+        <small *ngIf="emailControl.errors?.email" class="invalid-feedback">
           * Email is invalid
-        </div>
+        </small>
       </div>
 
       <div class="form-group">
         <label for="phoneNumber"> Phone Number </label>
         <input id="phoneNumber" type="text" name="phoneNumber" [(ngModel)]="employee.phoneNumber" class="form-control"
-          #phoneControl="ngModel" [class.is-invalid]="phoneControl.touched && phoneControl.invalid" required>
-        <div *ngIf="phoneControl.touched && phoneControl.invalid" class="text-danger">
+          #phoneControl="ngModel" [class.is-invalid]="phoneControl.invalid" [required]="contactPrefControl.value === 'phone'">
+        <small *ngIf="phoneControl.invalid" class="invalid-feedback">
           * Phone number is required
-        </div>
+        </small>
       </div>
 
       <div class="form-group">
@@ -96,34 +97,39 @@
         </div>
       </div>
 
+      <!-- Below control uses Custom Validation -->
       <div class="form-group">
         <label for="department" class="col-form-label"> Department</label>
-        <select class="form-control" id="department" name="department" [(ngModel)]="employee.department">
-          <!-- <option value="-1" selected>Select Department</option> -->
+        <select appSelectValidator="-1" class="form-control" id="department" name="department" [(ngModel)]="employee.department"
+          #departmentControl="ngModel" [class.is-invalid]="departmentControl.touched && departmentControl.errors?.defaultSelected">
+          <option [value]="-1">Select Department</option>
           <option *ngFor="let dept of departments" [value]="dept.id">{{dept.name}}</option>
         </select>
+        <small *ngIf="departmentControl.touched && departmentControl.errors?.defaultSelected" class="invalid-feedback">
+          * Department is required
+        </small>
       </div>
 
       <div class="row">
         <div class="form-group col-md-4">
           <label for="dateOfBirth"> Date of birth </label>
           <input bsDatepicker [bsConfig]="datepickerConfig" placement="right" id="dateOfBirth" type="text" name="dateOfBirth"
-            [(ngModel)]="employee.dateOfBirth" class="form-control" #dobControl="ngModel" [class.is-invalid]="dobControl.touched && dobControl.invalid"
+            [(ngModel)]="employee.dateOfBirth" class="form-control" #dobControl="ngModel" [class.is-invalid]="dobControl.touched && dobControl.errors?.required"
             required>
-          <div *ngIf="dobControl.touched && dobControl.invalid" class="text-danger">
+          <small *ngIf="dobControl.touched && dobControl.errors?.required" class="invalid-feedback">
             * Date of birth is required
-          </div>
+          </small>
         </div>
       </div>
 
       <div class="form-group">
         <label for="photoPath"> Photo Path </label>
         <input id="photoPath" type="text" name="photoPath" [(ngModel)]="employee.photoPath" class="form-control"
-          #photoPathControl="ngModel" [class.is-invalid]="photoPathControl.touched && photoPathControl.invalid"
+          #photoPathControl="ngModel" [class.is-invalid]="photoPathControl.touched && photoPathControl.errors?.required"
           required>
-        <div *ngIf="photoPathControl.touched && photoPathControl.invalid" class="text-danger">
+        <small *ngIf="photoPathControl.touched && photoPathControl.errors?.required" class="invalid-feedback">
           * Photo path is required
-        </div>
+        </small>
       </div>
 
       <div class="form-group">
@@ -134,6 +140,30 @@
 
       <div class="form-group" *ngIf="previewPhoto">
         <img [src]="employee.photoPath" style="width: 200px; height: 200px">
+      </div>
+
+      <!-- Cross field validation -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" #passwordControl="ngModel" type="text" class="form-control" [(ngModel)]="employee.password"
+          (input)="confirmPasswordControl.control.updateValueAndValidity()" [class.is-invalid]="(passwordControl.touched && passwordControl.errors?.required) || (confirmPasswordControl.touched && confirmPasswordControl.errors?.notEqual && !confirmPasswordControl.errors?.required)"
+          required>
+        <small class="invalid-feedback" *ngIf="passwordControl.touched && passwordControl.errors?.required">
+          * Password is required
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" name="confirmPassword" #confirmPasswordControl="ngModel" type="text" class="form-control"
+          [(ngModel)]="employee.confirmPassword" appConfirmEqualValidator="password" [class.is-invalid]="confirmPasswordControl.touched && (confirmPasswordControl.errors?.required || confirmPasswordControl.errors?.notEqual)"
+          required>
+        <small class="invalid-feedback" *ngIf="confirmPasswordControl.touched && confirmPasswordControl.errors?.required">
+          * Confirm Password is required
+        </small>
+        <small class="invalid-feedback" *ngIf="confirmPasswordControl.touched && confirmPasswordControl.errors?.notEqual && !confirmPasswordControl.errors?.required">
+          * Password and Confirm Password does not match
+        </small>
       </div>
 
     </div>

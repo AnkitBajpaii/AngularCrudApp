@@ -39,7 +39,7 @@ export class CreateEmployeeComponent implements OnInit {
   resetEmployee() {
     this.employee = {
       id: null, name: null, email: null, phoneNumber: null, contactPreference: null,
-      gender: null, isActive: null, department: null, dateOfBirth: null, photoPath: null
+      gender: null, isActive: false, department: '-1', dateOfBirth: null, photoPath: null
     };
   }
 
