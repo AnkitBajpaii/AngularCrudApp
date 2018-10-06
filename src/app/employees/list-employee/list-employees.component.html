@@ -1,0 +1,13 @@
+<div>
+
+  <div>
+    <h4>Employee List</h4>
+  </div>
+  <div class="form-group">
+    <input type="text" placeholder="Search By Name" class="form-control" style="width: 300px" [(ngModel)]="searchTerm">
+  </div>
+  <div *ngFor="let employee of filteredEmployees;">
+    <app-display-employee [employee]="employee" [departments]="departments" [showCrudOptions]="true" [showBody]="false"
+      [isPrevSelected]="employee.id === employeeIdToHighlight"></app-display-employee>
+  </div>
+</div>

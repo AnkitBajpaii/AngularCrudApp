@@ -4,15 +4,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { ListEmployeesComponent } from './employees/list-employees.component';
-import { CreateEmployeeComponent } from './employees/create-employee.component';
+import { ListEmployeesComponent } from './employees/list-employee/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee/create-employee.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
 import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
+import { EmployeeService } from './services/employee.service';
+import { DisplayEmployeeComponent } from './employees/display-employee/display-employee.component';
+import { CreateEmployeeCanDeactivateGuardService } from './employees/guards/create-employee-can-deactivate-guard';
+import { EmployeeDetailsComponent } from './employees/employee-details/employee-details.component';
 
 const appRoutes: Routes = [
   { path: 'list', component: ListEmployeesComponent },
-  { path: 'create', component: CreateEmployeeComponent },
+  { path: 'create', component: CreateEmployeeComponent, canDeactivate: [CreateEmployeeCanDeactivateGuardService] },
+  { path: 'employees/:id', component: EmployeeDetailsComponent},
   { path: '', redirectTo: '/list', pathMatch: 'full' }
 ];
 
@@ -22,7 +27,9 @@ const appRoutes: Routes = [
     ListEmployeesComponent,
     CreateEmployeeComponent,
     SelectRequiredValidatorDirective,
-    ConfirmEqualValidatorDirective
+    ConfirmEqualValidatorDirective,
+    DisplayEmployeeComponent,
+    EmployeeDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +37,7 @@ const appRoutes: Routes = [
     FormsModule,
     BsDatepickerModule.forRoot()
   ],
-  providers: [],
+  providers: [EmployeeService, CreateEmployeeCanDeactivateGuardService],
 
   bootstrap: [AppComponent]
 })

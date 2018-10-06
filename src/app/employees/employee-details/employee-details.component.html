@@ -1,0 +1,12 @@
+<div>
+
+  <div>
+    <h4>Employee Details</h4>
+  </div>
+  <div *ngIf="employee">
+    <app-display-employee [employee]="employee" [departments]="departments" [showBody]="true" [allowBack]="true"></app-display-employee>
+  </div>
+  <div *ngIf="!employee" class="alert alert-danger">
+    <h5>No employee found with given id</h5>
+  </div>
+</div>
