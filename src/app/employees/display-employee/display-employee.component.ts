@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Employee } from '../../models/employee';
 import { Department } from '../../models/department';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-display-employee',
@@ -9,9 +10,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./display-employee.component.css']
 })
 export class DisplayEmployeeComponent implements OnInit {
-
-  @Input()
-  allowBack: boolean;
 
   @Input()
   showCrudOptions: boolean;
@@ -28,7 +26,13 @@ export class DisplayEmployeeComponent implements OnInit {
   @Input()
   isPrevSelected: boolean;
 
-  constructor(private _router: Router) { }
+  @Input()
+  searchTerm: string;
+
+  @Output()
+  notifyDelete: EventEmitter<number> = new EventEmitter<number>();
+
+  constructor(private _router: Router, private employeeService: EmployeeService) { }
 
   ngOnInit() {
   }
@@ -43,22 +47,24 @@ export class DisplayEmployeeComponent implements OnInit {
   }
 
   navigateToView(): void {
-    this._router.navigate(['/employees', this.employee.id]);
+    const extras: NavigationExtras = { queryParams: { 'searchTerm': this.searchTerm } };
+    this._router.navigate(['/employees', this.employee.id], extras);
   }
 
   navigateToEdit(): void {
-    this._router.navigate(['/create']);
+    this._router.navigate(['/edit', this.employee.id]);
   }
 
-  navigateToDelete(): void {
+  deleteEmployee(): void {
+    if (confirm('Are you sure you want to delete?')) {
+      const id = this.employee.id;
+      this.employeeService.delete(id);
+      this.notifyDelete.emit(id);
+    }
   }
 
   toggleCardBody() {
     this.showBody = !this.showBody;
-  }
-
-  goBack() {
-    this._router.navigate(['/list', { id: this.employee.id }]);
   }
 
 }

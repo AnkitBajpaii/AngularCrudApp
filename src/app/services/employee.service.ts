@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Employee } from '../models/employee';
 import { Department } from '../models/department';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Injectable()
 export class EmployeeService {
@@ -9,8 +11,8 @@ export class EmployeeService {
         {
             id: 1,
             name: 'Mark',
-            gender: 'Male',
-            contactPreference: 'Email',
+            gender: 'male',
+            contactPreference: 'email',
             email: 'mark@pragimtech.com',
             dateOfBirth: new Date('10/25/1988'),
             department: '3',
@@ -20,8 +22,8 @@ export class EmployeeService {
         {
             id: 2,
             name: 'Mary',
-            gender: 'Female',
-            contactPreference: 'Phone',
+            gender: 'female',
+            contactPreference: 'phone',
             phoneNumber: 2345978640,
             dateOfBirth: new Date('11/20/1979'),
             department: '2',
@@ -31,8 +33,8 @@ export class EmployeeService {
         {
             id: 3,
             name: 'John',
-            gender: 'Male',
-            contactPreference: 'Phone',
+            gender: 'male',
+            contactPreference: 'phone',
             phoneNumber: 5432978640,
             dateOfBirth: new Date('3/25/1976'),
             department: '3',
@@ -49,19 +51,38 @@ export class EmployeeService {
         { id: '5', name: 'Admin' }
     ];
 
-    getDepartments() {
-        return this.departments;
+    getDepartments(): Observable<Department[]> {
+        return of(this.departments);
     }
 
-    getEmployees(): Employee[] {
-        return this.employees;
+    getEmployees(): Observable<Employee[]> {
+        return of(this.employees).pipe(delay(2000));
     }
 
-    getEmployeeById(id: number): Employee {
-        return this.employees.find(e => e.id === id);
+    getEmployeeById(id: number): Observable<Employee> {
+        return of(this.employees.find(e => e.id === id));
     }
 
     save(employee: Employee) {
+        const maxId = this.employees.reduce((e1, e2) => {
+            return (e1.id > e2.id) ? e1 : e2;
+        }).id;
+
+        employee.id = maxId + 1;
         this.employees.push(employee);
+    }
+
+    update(employee: Employee) {
+        const index = this.employees.findIndex(e => e.id === employee.id);
+        if (index !== -1) {
+            this.employees[index] = employee;
+        }
+    }
+
+    delete(id: number) {
+        const i = this.employees.findIndex(e => e.id === id);
+        if (i !== -1) {
+            this.employees.splice(i, 1);
+        }
     }
 }

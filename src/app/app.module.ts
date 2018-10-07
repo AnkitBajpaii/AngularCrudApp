@@ -13,11 +13,13 @@ import { EmployeeService } from './services/employee.service';
 import { DisplayEmployeeComponent } from './employees/display-employee/display-employee.component';
 import { CreateEmployeeCanDeactivateGuardService } from './employees/guards/create-employee-can-deactivate-guard';
 import { EmployeeDetailsComponent } from './employees/employee-details/employee-details.component';
+import { EmployeeListResolverService } from './services/employee-list-resolver.service';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 const appRoutes: Routes = [
-  { path: 'list', component: ListEmployeesComponent },
-  { path: 'create', component: CreateEmployeeComponent, canDeactivate: [CreateEmployeeCanDeactivateGuardService] },
-  { path: 'employees/:id', component: EmployeeDetailsComponent},
+  { path: 'list', component: ListEmployeesComponent, resolve: { employeeList: EmployeeListResolverService } },
+  { path: 'edit/:id', component: CreateEmployeeComponent, canDeactivate: [CreateEmployeeCanDeactivateGuardService] },
+  { path: 'employees/:id', component: EmployeeDetailsComponent },
   { path: '', redirectTo: '/list', pathMatch: 'full' }
 ];
 
@@ -35,9 +37,10 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    Ng4LoadingSpinnerModule.forRoot()
   ],
-  providers: [EmployeeService, CreateEmployeeCanDeactivateGuardService],
+  providers: [EmployeeService, CreateEmployeeCanDeactivateGuardService, EmployeeListResolverService],
 
   bootstrap: [AppComponent]
 })

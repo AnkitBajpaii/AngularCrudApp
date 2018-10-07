@@ -1,12 +1,17 @@
-<div>
+<div class="container">
 
-  <div>
+  <div class="row">
     <h4>Employee Details</h4>
   </div>
-  <div *ngIf="employee">
-    <app-display-employee [employee]="employee" [departments]="departments" [showBody]="true" [allowBack]="true"></app-display-employee>
+  <div class="row" *ngIf="employee">
+    <div class="col-md-12">
+      <app-display-employee [employee]="employee" [departments]="departments" [showBody]="true"></app-display-employee>
+    </div>
   </div>
-  <div *ngIf="!employee" class="alert alert-danger">
+  <div *ngIf="!employee" class="row alert alert-danger">
     <h5>No employee found with given id</h5>
+  </div>
+  <div class="row">
+    <a class="btn btn-primary" (click)="goBack()"> Back to Employee List </a>
   </div>
 </div>

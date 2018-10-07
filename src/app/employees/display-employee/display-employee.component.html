@@ -1,92 +1,94 @@
-<div class="card mb-2">
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card mb-2">
 
-  <div class="card-header pointerCursor " (click)="toggleCardBody()" [ngClass]="{'bg-secondary': isPrevSelected , 'bg-primary': !isPrevSelected}">
-    <h3 class="card-title">{{employee.name}}</h3>
-  </div>
-  <div *ngIf="showBody">
-    <div class="card-body">
-
-      <div class="row vertical-align">
-
-        <div class="col-xs-4">
-          <img class="imageClass" [src]="employee.photoPath" />
+        <div class="card-header pointerCursor " (click)="toggleCardBody()" [ngClass]="{'bg-secondary': isPrevSelected , 'bg-primary': !isPrevSelected}">
+          <h3 class="card-title">{{employee.name}}</h3>
         </div>
-        <div class="col-xs-8 ml-5">
+        <div *ngIf="showBody">
+          <div class="card-body">
 
-          <div class="row">
-            <div class="col-xs-6">
-              Gender
-            </div>
-            <div class="col-xs-6">
-              : {{employee.gender}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              Date of Birth
-            </div>
-            <div class="col-xs-6">
-              : {{employee.dateOfBirth | date}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              Contact Preference
-            </div>
-            <div class="col-xs-6">
-              : {{employee.contactPreference}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              Phone
-            </div>
-            <div class="col-xs-6">
-              : {{employee.phoneNumber}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              Email
-            </div>
-            <div class="col-xs-6">
-              : {{employee.email}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              Department
-            </div>
-            <div class="col-xs-6">
-              : {{getDepartmentName(employee.department)}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              Is Active
-            </div>
-            <div class="col-xs-6">
-              : {{employee.isActive}}
+            <div class="row vertical-align">
+
+              <div class="col-xs-4">
+                <img class="imageClass" [src]="employee.photoPath" />
+              </div>
+              <div class="col-xs-8 ml-5">
+
+                <div class="row">
+                  <div class="col-xs-6">
+                    Gender
+                  </div>
+                  <div class="col-xs-6">
+                    : {{employee.gender}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    Date of Birth
+                  </div>
+                  <div class="col-xs-6">
+                    : {{employee.dateOfBirth | date}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    Contact Preference
+                  </div>
+                  <div class="col-xs-6">
+                    : {{employee.contactPreference}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    Phone
+                  </div>
+                  <div class="col-xs-6">
+                    : {{employee.phoneNumber}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    Email
+                  </div>
+                  <div class="col-xs-6">
+                    : {{employee.email}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    Department
+                  </div>
+                  <div class="col-xs-6">
+                    : {{getDepartmentName(employee.department)}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    Is Active
+                  </div>
+                  <div class="col-xs-6">
+                    : {{employee.isActive}}
+                  </div>
+                </div>
+
+              </div>
+
             </div>
           </div>
 
+          <div class="card-footer" *ngIf="showCrudOptions">
+            <div class="row">
+              <a class="btn btn-outline-info mr-2" (click)="navigateToView()"> View </a>
+              <a class="btn btn-outline-info mr-2" (click)="navigateToEdit()"> Edit </a>
+              <a class="btn btn-danger" (click)="deleteEmployee()"> Delete </a>
+            </div>
+          </div>
         </div>
-
       </div>
     </div>
 
-    <div class="card-footer">
-      <div class="row">
-        <div *ngIf="allowBack">
-          <a class="btn btn-primary" (click)="goBack()"> Back to Employee List </a>
-        </div>
-        <div *ngIf="showCrudOptions">
-          <a class="btn btn-outline-info mr-2" (click)="navigateToView()"> View </a>
-          <a class="btn btn-outline-info mr-2" (click)="navigateToEdit()"> Edit </a>
-          <a class="btn btn-danger" (click)="navigateToDelete()"> Delete </a>
-        </div>
-
-      </div>
-    </div>
   </div>
+
 </div>
